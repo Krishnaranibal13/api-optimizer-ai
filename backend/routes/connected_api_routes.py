@@ -324,11 +324,11 @@ def test_api_connection_route(
         # Categorize health status
         if status_code in [401, 403]:
             computed_status = "Unauthorized"
-            is_failure = True
-        elif status_code >= 400:
+            is_failure = False
+        elif status_code >= 500:
             computed_status = "Offline"
             is_failure = True
-        elif elapsed_ms >= 500:
+        elif elapsed_ms >= 1500:
             computed_status = "Slow"
             is_failure = False
         else:
