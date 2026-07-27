@@ -43,7 +43,8 @@ import {
   FaShieldAlt,
   FaChartLine,
   FaLock,
-  FaFilter
+  FaFilter,
+  FaEye
 } from "react-icons/fa";
 
 import "../styles/dashboard.css";
@@ -56,6 +57,7 @@ function Dashboard({ darkMode, setDarkMode }) {
   const [connectedApisList, setConnectedApisList] = useState([]);
   const [lastUpdated, setLastUpdated] = useState("");
   const [selectedApiId, setSelectedApiId] = useState("");
+  const [viewNotice, setViewNotice] = useState(null);
   const [error, setError] = useState(null);
 
   const navigate = useNavigate();
@@ -126,6 +128,15 @@ function Dashboard({ darkMode, setDarkMode }) {
     }
   }
 
+  const handleViewAnalyticsClick = () => {
+    fetchDashboard(selectedApiId);
+    const targetName = selectedApiId
+      ? (apiOptions.find(a => a.id === selectedApiId)?.name || `Connected API #${selectedApiId}`)
+      : "All Connected APIs (Global Telemetry)";
+    setViewNotice(`Loaded analytics for: ${targetName}`);
+    setTimeout(() => setViewNotice(null), 4000);
+  };
+
   // Auto Refresh Every 5 Seconds
   useEffect(() => {
     fetchDashboard(selectedApiId);
@@ -164,6 +175,30 @@ function Dashboard({ darkMode, setDarkMode }) {
         <Sidebar />
 
         <main className="content">
+          {/* Toast Notification Notice */}
+          {viewNotice && (
+            <div
+              style={{
+                position: "fixed",
+                top: "80px",
+                right: "20px",
+                padding: "12px 20px",
+                borderRadius: "14px",
+                color: "#ffffff",
+                backgroundColor: "#0284c7",
+                boxShadow: "0 10px 25px rgba(2, 132, 199, 0.4)",
+                zIndex: 2000,
+                fontWeight: "bold",
+                fontSize: "14px",
+                display: "flex",
+                alignItems: "center",
+                gap: "8px"
+              }}
+            >
+              <FaEye /> {viewNotice}
+            </div>
+          )}
+
           {/* Hero Banner */}
           <div className="hero-banner">
             <div>
@@ -245,7 +280,7 @@ function Dashboard({ darkMode, setDarkMode }) {
               </div>
             </div>
 
-            <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "10px", flexWrap: "wrap" }}>
               <FaFilter style={{ color: "#38bdf8", fontSize: "14px" }} />
               <label style={{ fontSize: "13px", fontWeight: "bold", color: "var(--text-main)" }}>
                 Select API Report:
@@ -255,7 +290,6 @@ function Dashboard({ darkMode, setDarkMode }) {
                 onChange={(e) => {
                   const val = e.target.value ? parseInt(e.target.value) : "";
                   setSelectedApiId(val);
-                  fetchDashboard(val);
                 }}
                 style={{
                   padding: "10px 16px",
@@ -276,6 +310,27 @@ function Dashboard({ darkMode, setDarkMode }) {
                   </option>
                 ))}
               </select>
+
+              <button
+                onClick={handleViewAnalyticsClick}
+                style={{
+                  padding: "10px 20px",
+                  backgroundColor: "#0284c7",
+                  color: "#ffffff",
+                  border: "none",
+                  borderRadius: "20px",
+                  fontWeight: "bold",
+                  fontSize: "13px",
+                  cursor: "pointer",
+                  boxShadow: "0 4px 15px rgba(2, 132, 199, 0.4)",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "6px",
+                  transition: "all 0.2s ease"
+                }}
+              >
+                <FaEye /> View Analytics
+              </button>
             </div>
           </div>
 
