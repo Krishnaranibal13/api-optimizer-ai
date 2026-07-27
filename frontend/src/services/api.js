@@ -24,7 +24,12 @@ API.interceptors.response.use(
         if (error.response && error.response.status === 401) {
             localStorage.removeItem("token");
             localStorage.removeItem("user");
-            if (window.location.pathname !== "/login" && window.location.pathname !== "/register") {
+            
+            // Only auto-redirect to login if on a protected page
+            const protectedPaths = ["/connected-apis", "/settings"];
+            const isProtected = protectedPaths.some((path) => window.location.pathname.startsWith(path));
+            
+            if (isProtected) {
                 window.location.href = "/login";
             }
         }

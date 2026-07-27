@@ -7,6 +7,8 @@ import {
     FaSearch,
     FaUserCircle,
     FaSignOutAlt,
+    FaSignInAlt,
+    FaUserPlus,
     FaCheckCircle,
     FaExclamationTriangle,
     FaTimes,
@@ -25,7 +27,7 @@ function Navbar({ darkMode, setDarkMode }) {
     const [unreadCount, setUnreadCount] = useState(3);
 
     const navigate = useNavigate();
-    const { logout, user } = useAuth();
+    const { logout, user, isAuthenticated } = useAuth();
     const notificationRef = useRef(null);
 
     useEffect(() => {
@@ -80,7 +82,13 @@ function Navbar({ darkMode, setDarkMode }) {
         if (q.startsWith("/") || q.toLowerCase().includes("api") || q.toLowerCase().includes("log")) {
             navigate(`/logs?endpoint=${encodeURIComponent(q)}`);
         } else {
-            navigate(`/connected-apis?query=${encodeURIComponent(q)}`);
+            if (!isAuthenticated) {
+                navigate("/login", {
+                    state: { from: `/connected-apis?query=${encodeURIComponent(q)}`, message: "Please log in to add and connect your REST APIs." }
+                });
+            } else {
+                navigate(`/connected-apis?query=${encodeURIComponent(q)}`);
+            }
         }
     };
 
@@ -186,14 +194,59 @@ function Navbar({ darkMode, setDarkMode }) {
                     {darkMode ? <FaSun style={{ color: "#f59e0b" }} /> : <FaMoon />}
                 </button>
 
-                <div className="profile" onClick={() => navigate("/settings")} style={{ cursor: "pointer" }} title="View Settings & Profile">
-                    <FaUserCircle size={28} style={{ color: "var(--text-active)" }} />
-                    <span>{user?.name || "User"}</span>
-                </div>
+                {/* Auth Profile / Login Actions */}
+                {isAuthenticated ? (
+                    <>
+                        <div className="profile" onClick={() => navigate("/settings")} style={{ cursor: "pointer" }} title="View Settings & Profile">
+                            <FaUserCircle size={24} style={{ color: "var(--text-active)" }} />
+                            <span>{user?.name || "User"}</span>
+                        </div>
 
-                <button className="icon-btn" onClick={handleLogout} title="Logout">
-                    <FaSignOutAlt />
-                </button>
+                        <button className="icon-btn" onClick={handleLogout} title="Logout">
+                            <FaSignOutAlt />
+                        </button>
+                    </>
+                ) : (
+                    <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
+                        <button
+                            onClick={() => navigate("/login")}
+                            style={{
+                                padding: "6px 14px",
+                                backgroundColor: "#7c3aed",
+                                color: "#ffffff",
+                                border: "none",
+                                borderRadius: "20px",
+                                fontWeight: "bold",
+                                fontSize: "13px",
+                                cursor: "pointer",
+                                display: "inline-flex",
+                                alignItems: "center",
+                                gap: "6px",
+                                boxShadow: "0 4px 12px rgba(124, 58, 237, 0.3)"
+                            }}
+                        >
+                            <FaSignInAlt /> Log In
+                        </button>
+                        <button
+                            onClick={() => navigate("/register")}
+                            style={{
+                                padding: "6px 14px",
+                                backgroundColor: "rgba(255, 255, 255, 0.15)",
+                                color: "var(--text-main)",
+                                border: "1px solid var(--border-card)",
+                                borderRadius: "20px",
+                                fontWeight: "bold",
+                                fontSize: "13px",
+                                cursor: "pointer",
+                                display: "inline-flex",
+                                alignItems: "center",
+                                gap: "6px"
+                            }}
+                        >
+                            <FaUserPlus /> Register
+                        </button>
+                    </div>
+                )}
             </div>
         </header>
     );

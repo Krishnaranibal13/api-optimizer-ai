@@ -23,6 +23,7 @@ import AIRecommendations from "../components/AIRecommendations";
 
 import { getConnectedApiSummary } from "../services/connectedApiService";
 import { getAiScoreCard, getAiBusinessInsights } from "../services/aiService";
+import { useAuth } from "../auth/AuthContext";
 
 import API from "../services/api";
 
@@ -36,7 +37,12 @@ import {
   FaBrain,
   FaMagic,
   FaRocket,
-  FaFilePdf
+  FaFilePdf,
+  FaInfoCircle,
+  FaCheckCircle,
+  FaShieldAlt,
+  FaChartLine,
+  FaLock
 } from "react-icons/fa";
 
 import "../styles/dashboard.css";
@@ -50,18 +56,47 @@ function Dashboard({ darkMode, setDarkMode }) {
   const [error, setError] = useState(null);
 
   const navigate = useNavigate();
+  const { isAuthenticated } = useAuth();
+
+  // Handler when user clicks "Connect API" or "Add Connected API"
+  const handleConnectApiClick = () => {
+    if (!isAuthenticated) {
+      navigate("/login", {
+        state: {
+          from: "/connected-apis",
+          message: "Please log in or register to add and connect your REST APIs."
+        }
+      });
+    } else {
+      navigate("/connected-apis");
+    }
+  };
 
   // Fetch Dashboard Data
   async function fetchDashboard() {
     try {
       const [res, summaryRes, scoreCardRes, businessRes] = await Promise.all([
-        API.get("/ai/dashboard"),
+        API.get("/ai/dashboard").catch(() => null),
         getConnectedApiSummary().catch(() => null),
         getAiScoreCard().catch(() => null),
         getAiBusinessInsights().catch(() => null),
       ]);
 
-      setDashboard(res.data);
+      if (res && res.data) {
+        setDashboard(res.data);
+      } else {
+        // Public Demo Telemetry Fallback Structure
+        setDashboard({
+          score: {
+            score: 95,
+            status: "Excellent",
+            metrics: { total_requests: 1250, avg_response_time: 0.045, error_rate: 0.0, most_used_endpoint: "/api/v1/users" }
+          },
+          alerts: [],
+          traffic: { total_logs: 1250, status: "Healthy", predicted_next_hour: 1400, top_endpoints: [["/api/v1/users", 540], ["/api/v1/auth/login", 320], ["/connected-apis", 180]] }
+        });
+      }
+
       if (summaryRes) setApiSummary(summaryRes);
       if (scoreCardRes) setScoreCard(scoreCardRes);
       if (businessRes) setBusinessInsights(businessRes);
@@ -70,14 +105,7 @@ function Dashboard({ darkMode, setDarkMode }) {
       setLastUpdated(new Date().toLocaleTimeString());
     } catch (err) {
       console.error("Failed to load dashboard:", err);
-      if (err.response && err.response.status === 401) {
-        localStorage.removeItem("token");
-        localStorage.removeItem("user");
-        window.location.href = "/login";
-        return;
-      }
-      setError("Failed to load live telemetry dashboard. Please ensure backend is running.");
-      // Fallback default structure
+      // Fallback default structure for public view
       setDashboard({
         score: {
           score: 95,
@@ -133,7 +161,7 @@ function Dashboard({ darkMode, setDarkMode }) {
 
             <div style={{ display: "flex", gap: "12px", flexWrap: "wrap", zIndex: 1 }}>
               <button
-                onClick={() => navigate("/connected-apis")}
+                onClick={handleConnectApiClick}
                 style={{
                   padding: "12px 20px",
                   backgroundColor: "#ffffff",
@@ -149,7 +177,7 @@ function Dashboard({ darkMode, setDarkMode }) {
                   boxShadow: "0 8px 20px rgba(0,0,0,0.2)"
                 }}
               >
-                <FaRocket style={{ color: "#7c3aed" }} /> Connect API
+                <FaRocket style={{ color: "#7c3aed" }} /> {isAuthenticated ? "Connect API" : "Connect API (Log In)"}
               </button>
               <button
                 onClick={() => navigate("/executive-dashboard")}
@@ -173,15 +201,143 @@ function Dashboard({ darkMode, setDarkMode }) {
             </div>
           </div>
 
+          {/* Project Explanation Section: How It Works & Purpose */}
+          <div
+            style={{
+              backgroundColor: "var(--bg-card)",
+              backdropFilter: "blur(20px)",
+              border: "1px solid var(--border-card)",
+              borderRadius: "24px",
+              padding: "28px",
+              marginBottom: "32px",
+              boxShadow: "var(--shadow-card)"
+            }}
+          >
+            <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "16px" }}>
+              <FaInfoCircle style={{ fontSize: "24px", color: "#a855f7" }} />
+              <div>
+                <h2 style={{ margin: 0, fontSize: "20px", fontWeight: "800", color: "var(--text-heading)" }}>
+                  💡 What is API Optimizer AI & How Does It Work?
+                </h2>
+                <p style={{ margin: "4px 0 0 0", fontSize: "13px", color: "var(--text-muted)" }}>
+                  Enterprise API Performance Monitoring, Real-time Ingestion, Time-Series ML Forecasting & SLA Intelligence Platform.
+                </p>
+              </div>
+            </div>
+
+            <p style={{ fontSize: "14px", lineHeight: "1.7", color: "var(--text-main)", marginBottom: "20px" }}>
+              Modern microservices and third-party REST APIs (Stripe, GitHub, OpenAI, internal backends) suffer from latency bottlenecks, unexpected server downtime, and security threats. <b>API Optimizer AI</b> tracks real-time HTTP log streams, predicts traffic spikes using Machine Learning, and delivers actionable optimization advice.
+            </p>
+
+            {/* How It Works 4-Step Grid */}
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: "16px" }}>
+              <div
+                style={{
+                  backgroundColor: "var(--table-row-bg)",
+                  padding: "18px",
+                  borderRadius: "16px",
+                  border: "1px solid var(--table-border)",
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "8px"
+                }}
+              >
+                <div style={{ display: "flex", alignItems: "center", gap: "8px", fontWeight: "bold", color: "var(--text-heading)", fontSize: "14px" }}>
+                  <span style={{ width: "24px", height: "24px", borderRadius: "50%", backgroundColor: "#7c3aed", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "12px" }}>1</span>
+                  Connect REST APIs
+                </div>
+                <p style={{ margin: 0, fontSize: "12.5px", color: "var(--text-muted)", lineHeight: "1.5" }}>
+                  Register API base URLs (Stripe, GitHub, custom services) to track SSL cert validity, DNS resolution, and latency health.
+                </p>
+                <span style={{ fontSize: "11px", fontWeight: "bold", color: "#e879f9", marginTop: "auto" }}>
+                  {!isAuthenticated ? "🔒 Requires User Login" : "✅ Available"}
+                </span>
+              </div>
+
+              <div
+                style={{
+                  backgroundColor: "var(--table-row-bg)",
+                  padding: "18px",
+                  borderRadius: "16px",
+                  border: "1px solid var(--table-border)",
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "8px"
+                }}
+              >
+                <div style={{ display: "flex", alignItems: "center", gap: "8px", fontWeight: "bold", color: "var(--text-heading)", fontSize: "14px" }}>
+                  <span style={{ width: "24px", height: "24px", borderRadius: "50%", backgroundColor: "#0284c7", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "12px" }}>2</span>
+                  Real-time Telemetry
+                </div>
+                <p style={{ margin: 0, fontSize: "12.5px", color: "var(--text-muted)", lineHeight: "1.5" }}>
+                  Automatically stream and filter HTTP status codes (2xx, 4xx, 5xx), payload sizes, and client IPs with multi-format CSV/JSON/PDF exports.
+                </p>
+                <span style={{ fontSize: "11px", fontWeight: "bold", color: "#38bdf8", marginTop: "auto" }}>
+                  🌐 Public Live Telemetry
+                </span>
+              </div>
+
+              <div
+                style={{
+                  backgroundColor: "var(--table-row-bg)",
+                  padding: "18px",
+                  borderRadius: "16px",
+                  border: "1px solid var(--table-border)",
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "8px"
+                }}
+              >
+                <div style={{ display: "flex", alignItems: "center", gap: "8px", fontWeight: "bold", color: "var(--text-heading)", fontSize: "14px" }}>
+                  <span style={{ width: "24px", height: "24px", borderRadius: "50%", backgroundColor: "#db2777", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "12px" }}>3</span>
+                  ML Traffic Predictor
+                </div>
+                <p style={{ margin: 0, fontSize: "12.5px", color: "var(--text-muted)", lineHeight: "1.5" }}>
+                  Time-series forecasting predicts traffic demand 30–60 mins in advance, evaluating system risk scores and recommending Redis caching.
+                </p>
+                <span style={{ fontSize: "11px", fontWeight: "bold", color: "#f472b6", marginTop: "auto" }}>
+                  🤖 ML Time-Series Engine
+                </span>
+              </div>
+
+              <div
+                style={{
+                  backgroundColor: "var(--table-row-bg)",
+                  padding: "18px",
+                  borderRadius: "16px",
+                  border: "1px solid var(--table-border)",
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "8px"
+                }}
+              >
+                <div style={{ display: "flex", alignItems: "center", gap: "8px", fontWeight: "bold", color: "var(--text-heading)", fontSize: "14px" }}>
+                  <span style={{ width: "24px", height: "24px", borderRadius: "50%", backgroundColor: "#ea580c", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "12px" }}>4</span>
+                  Executive Intelligence
+                </div>
+                <p style={{ margin: 0, fontSize: "12.5px", color: "var(--text-muted)", lineHeight: "1.5" }}>
+                  Calculate infrastructure cost savings (compute, data egress, DB I/O), rank APIs against global benchmarks, and export official executive PDF reports.
+                </p>
+                <span style={{ fontSize: "11px", fontWeight: "bold", color: "#fb923c", marginTop: "auto" }}>
+                  📊 SLA Reports & PDFs
+                </span>
+              </div>
+            </div>
+          </div>
+
           {/* Canva Quick Action Row */}
           <div className="canva-action-grid">
-            <div className="canva-action-card" onClick={() => navigate("/connected-apis")}>
+            <div className="canva-action-card" onClick={handleConnectApiClick}>
               <div className="canva-action-icon" style={{ background: "linear-gradient(135deg, #7c3aed, #c084fc)" }}>
                 <FaServer />
               </div>
               <div>
-                <h4 style={{ margin: 0, fontSize: "14px", fontWeight: "bold", color: "var(--text-heading)" }}>Connect REST API</h4>
-                <p style={{ margin: 0, fontSize: "12px", color: "var(--text-muted)" }}>Add & test API endpoints</p>
+                <h4 style={{ margin: 0, fontSize: "14px", fontWeight: "bold", color: "var(--text-heading)" }}>
+                  Connect REST API {!isAuthenticated && <FaLock style={{ fontSize: "11px", marginLeft: "4px", color: "#e879f9" }} />}
+                </h4>
+                <p style={{ margin: 0, fontSize: "12px", color: "var(--text-muted)" }}>
+                  {!isAuthenticated ? "Log in to add API endpoints" : "Add & test API endpoints"}
+                </p>
               </div>
             </div>
 

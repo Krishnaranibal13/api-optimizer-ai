@@ -12,7 +12,6 @@ import AlertsPage from "./pages/AlertsPage";
 import SettingsPage from "./pages/SettingsPage";
 
 import ProtectedRoute from "./auth/ProtectedRoute";
-import HomeRedirect from "./auth/HomeRedirect";
 import { AuthProvider } from "./auth/AuthContext";
 
 function App() {
@@ -22,64 +21,26 @@ function App() {
         <BrowserRouter>
             <AuthProvider>
                 <Routes>
-                    {/* Home */}
-                    <Route path="/" element={<HomeRedirect />} />
+                    {/* Public Default Home & Dashboard */}
+                    <Route path="/" element={<Dashboard darkMode={darkMode} setDarkMode={setDarkMode} />} />
+                    <Route path="/dashboard" element={<Dashboard darkMode={darkMode} setDarkMode={setDarkMode} />} />
 
                     {/* Auth */}
                     <Route path="/login" element={<Login />} />
                     <Route path="/register" element={<Register />} />
 
-                    {/* Protected Main Pages */}
-                    <Route
-                        path="/dashboard"
-                        element={
-                            <ProtectedRoute>
-                                <Dashboard darkMode={darkMode} setDarkMode={setDarkMode} />
-                            </ProtectedRoute>
-                        }
-                    />
+                    {/* Public Feature Explorers */}
+                    <Route path="/executive-dashboard" element={<ExecutiveDashboardPage darkMode={darkMode} setDarkMode={setDarkMode} />} />
+                    <Route path="/logs" element={<LogExplorer darkMode={darkMode} setDarkMode={setDarkMode} />} />
+                    <Route path="/ai-insights" element={<AIInsightsPage darkMode={darkMode} setDarkMode={setDarkMode} />} />
+                    <Route path="/alerts" element={<AlertsPage darkMode={darkMode} setDarkMode={setDarkMode} />} />
 
-                    <Route
-                        path="/executive-dashboard"
-                        element={
-                            <ProtectedRoute>
-                                <ExecutiveDashboardPage darkMode={darkMode} setDarkMode={setDarkMode} />
-                            </ProtectedRoute>
-                        }
-                    />
-
+                    {/* Protected Action Routes (Requires Login) */}
                     <Route
                         path="/connected-apis"
                         element={
-                            <ProtectedRoute>
+                            <ProtectedRoute message="Please log in to add and connect your REST APIs.">
                                 <ConnectedApis darkMode={darkMode} setDarkMode={setDarkMode} />
-                            </ProtectedRoute>
-                        }
-                    />
-
-                    <Route
-                        path="/logs"
-                        element={
-                            <ProtectedRoute>
-                                <LogExplorer darkMode={darkMode} setDarkMode={setDarkMode} />
-                            </ProtectedRoute>
-                        }
-                    />
-
-                    <Route
-                        path="/ai-insights"
-                        element={
-                            <ProtectedRoute>
-                                <AIInsightsPage darkMode={darkMode} setDarkMode={setDarkMode} />
-                            </ProtectedRoute>
-                        }
-                    />
-
-                    <Route
-                        path="/alerts"
-                        element={
-                            <ProtectedRoute>
-                                <AlertsPage darkMode={darkMode} setDarkMode={setDarkMode} />
                             </ProtectedRoute>
                         }
                     />
@@ -87,7 +48,7 @@ function App() {
                     <Route
                         path="/settings"
                         element={
-                            <ProtectedRoute>
+                            <ProtectedRoute message="Please log in to view profile settings and manage security.">
                                 <SettingsPage darkMode={darkMode} setDarkMode={setDarkMode} />
                             </ProtectedRoute>
                         }
