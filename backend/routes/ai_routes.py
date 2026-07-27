@@ -23,12 +23,13 @@ router = APIRouter(
 # ==========================================================
 @router.get("/dashboard")
 def ai_dashboard(
+    api_id: Optional[int] = Query(None, description="Filter dashboard by Connected API ID"),
     db: Session = Depends(get_db),
     current_user=Depends(get_current_user)
 ):
     try:
         service = AIAnalyticsService(db, current_user)
-        return service.get_dashboard_ai_summary()
+        return service.get_dashboard_ai_summary(api_id=api_id)
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,

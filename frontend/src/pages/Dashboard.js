@@ -42,7 +42,8 @@ import {
   FaCheckCircle,
   FaShieldAlt,
   FaChartLine,
-  FaLock
+  FaLock,
+  FaFilter
 } from "react-icons/fa";
 
 import "../styles/dashboard.css";
@@ -53,6 +54,7 @@ function Dashboard({ darkMode, setDarkMode }) {
   const [scoreCard, setScoreCard] = useState(null);
   const [businessInsights, setBusinessInsights] = useState(null);
   const [lastUpdated, setLastUpdated] = useState("");
+  const [selectedApiId, setSelectedApiId] = useState("");
   const [error, setError] = useState(null);
 
   const navigate = useNavigate();
@@ -72,11 +74,12 @@ function Dashboard({ darkMode, setDarkMode }) {
     }
   };
 
-  // Fetch Dashboard Data
-  async function fetchDashboard() {
+  // Fetch Dashboard Data (supports filtering by target connected API ID)
+  async function fetchDashboard(targetApiId = selectedApiId) {
     try {
+      const url = targetApiId ? `/ai/dashboard?api_id=${targetApiId}` : "/ai/dashboard";
       const [res, summaryRes, scoreCardRes, businessRes] = await Promise.all([
-        API.get("/ai/dashboard").catch(() => null),
+        API.get(url).catch(() => null),
         getConnectedApiSummary().catch(() => null),
         getAiScoreCard().catch(() => null),
         getAiBusinessInsights().catch(() => null),
@@ -105,7 +108,6 @@ function Dashboard({ darkMode, setDarkMode }) {
       setLastUpdated(new Date().toLocaleTimeString());
     } catch (err) {
       console.error("Failed to load dashboard:", err);
-      // Fallback default structure for public view
       setDashboard({
         score: {
           score: 95,
@@ -120,10 +122,10 @@ function Dashboard({ darkMode, setDarkMode }) {
 
   // Auto Refresh Every 5 Seconds
   useEffect(() => {
-    fetchDashboard();
-    const interval = setInterval(fetchDashboard, 5000);
+    fetchDashboard(selectedApiId);
+    const interval = setInterval(() => fetchDashboard(selectedApiId), 5000);
     return () => clearInterval(interval);
-  }, []);
+  }, [selectedApiId]);
 
   // Loading Screen
   if (!dashboard) {
@@ -198,6 +200,72 @@ function Dashboard({ darkMode, setDarkMode }) {
               >
                 <FaBriefcase /> Executive Board
               </button>
+            </div>
+          </div>
+
+          {/* API Selector & Telemetry Scope Header */}
+          <div
+            style={{
+              backgroundColor: "var(--bg-card)",
+              backdropFilter: "blur(20px)",
+              border: "1px solid var(--border-card)",
+              borderRadius: "20px",
+              padding: "16px 24px",
+              marginBottom: "24px",
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              flexWrap: "wrap",
+              gap: "14px",
+              boxShadow: "var(--shadow-card)"
+            }}
+          >
+            <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+              <FaServer style={{ color: "#38bdf8", fontSize: "22px" }} />
+              <div>
+                <div style={{ fontSize: "11px", color: "var(--text-muted)", fontWeight: "bold", textTransform: "uppercase" }}>
+                  Active Telemetry Report
+                </div>
+                <div style={{ fontSize: "16px", fontWeight: "800", color: "var(--text-heading)", display: "flex", alignItems: "center", gap: "8px" }}>
+                  <span>{dashboard.selected_api_name || "All Connected APIs (Global Telemetry)"}</span>
+                  <span style={{ fontSize: "11px", padding: "2px 10px", borderRadius: "12px", backgroundColor: "rgba(56, 189, 248, 0.15)", color: "#38bdf8", border: "1px solid rgba(56, 189, 248, 0.3)" }}>
+                    {dashboard.connected_apis ? `${dashboard.connected_apis.length} Connected APIs` : "Live Global Stream"}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+              <FaFilter style={{ color: "#38bdf8", fontSize: "14px" }} />
+              <label style={{ fontSize: "13px", fontWeight: "bold", color: "var(--text-main)" }}>
+                Select API Report:
+              </label>
+              <select
+                value={selectedApiId || ""}
+                onChange={(e) => {
+                  const val = e.target.value ? parseInt(e.target.value) : "";
+                  setSelectedApiId(val);
+                  fetchDashboard(val);
+                }}
+                style={{
+                  padding: "10px 16px",
+                  borderRadius: "14px",
+                  border: "1px solid var(--border-card)",
+                  backgroundColor: "var(--bg-search)",
+                  color: "var(--text-main)",
+                  fontSize: "14px",
+                  fontWeight: "bold",
+                  cursor: "pointer",
+                  outline: "none"
+                }}
+              >
+                <option value="">🌐 All Connected APIs (Global Telemetry)</option>
+                {(dashboard.connected_apis || []).map((api) => (
+                  <option key={api.id} value={api.id}>
+                    🔗 {api.name} ({api.base_url}) - {api.status}
+                  </option>
+                ))}
+              </select>
             </div>
           </div>
 
@@ -422,7 +490,7 @@ function Dashboard({ darkMode, setDarkMode }) {
               <FaBrain style={{ fontSize: "28px", color: "#38bdf8", flexShrink: 0 }} />
               <div>
                 <h4 style={{ margin: "0 0 4px 0", color: "var(--text-heading)", fontSize: "15px", fontWeight: "bold" }}>
-                  AI Business Insight ({businessInsights.summary_title || "System Health"})
+                  AI Business Insight ({dashboard.selected_api_name || businessInsights.summary_title || "System Health"})
                 </h4>
                 <p style={{ margin: 0, fontSize: "14px", color: "var(--text-muted)" }}>
                   {businessInsights.plain_english_summary || "System operating efficiently with low latency and optimal throughput."}
