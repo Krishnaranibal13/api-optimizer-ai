@@ -579,7 +579,7 @@ function ConnectedApis({ darkMode, setDarkMode }) {
                                             cursor: "pointer"
                                         }}
                                     >
-                                        Close Modal
+                                        Close Model
                                     </button>
                                 </div>
                             </div>
