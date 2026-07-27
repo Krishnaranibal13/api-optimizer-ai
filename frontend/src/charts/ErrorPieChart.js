@@ -44,7 +44,7 @@ function ErrorPieChart({ dashboard }) {
               <Cell
                 key={`cell-${index}`}
                 fill={ERROR_COLORS[index]}
-                stroke="rgba(192, 132, 252, 0.3)"
+                stroke="rgba(56, 189, 248, 0.3)"
                 strokeWidth={2}
               />
             ))}
@@ -52,8 +52,8 @@ function ErrorPieChart({ dashboard }) {
 
           <Tooltip
             contentStyle={{
-              backgroundColor: "rgba(18, 13, 36, 0.95)",
-              borderColor: "rgba(192, 132, 252, 0.4)",
+              backgroundColor: "rgba(11, 20, 42, 0.95)",
+              borderColor: "rgba(56, 189, 248, 0.4)",
               borderRadius: "12px",
               color: "#f8fafc"
             }}

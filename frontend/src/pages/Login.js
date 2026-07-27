@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import API from "../services/api";
 import { useAuth } from "../auth/AuthContext";
-import { FaLock, FaSignInAlt, FaExclamationCircle } from "react-icons/fa";
+import { FaSignInAlt, FaExclamationCircle } from "react-icons/fa";
 
 function Login() {
     const [email, setEmail] = useState("");
@@ -64,7 +64,7 @@ function Login() {
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
-                background: "radial-gradient(at 0% 0%, rgba(168, 85, 247, 0.28) 0px, transparent 50%), radial-gradient(at 100% 0%, rgba(236, 72, 153, 0.22) 0px, transparent 50%), #080413",
+                background: "radial-gradient(at 0% 0%, rgba(56, 189, 248, 0.3) 0px, transparent 50%), radial-gradient(at 100% 0%, rgba(6, 182, 212, 0.25) 0px, transparent 50%), #030712",
                 color: "#f8fafc",
                 padding: "20px"
             }}
@@ -73,17 +73,17 @@ function Login() {
                 style={{
                     width: "400px",
                     maxWidth: "100%",
-                    backgroundColor: "rgba(19, 14, 38, 0.9)",
+                    backgroundColor: "rgba(11, 20, 42, 0.9)",
                     backdropFilter: "blur(20px)",
                     borderRadius: "24px",
-                    border: "1px solid rgba(192, 132, 252, 0.3)",
+                    border: "1px solid rgba(56, 189, 248, 0.35)",
                     padding: "36px",
-                    boxShadow: "0 20px 45px rgba(168, 85, 247, 0.25)"
+                    boxShadow: "0 20px 45px rgba(2, 132, 199, 0.3)"
                 }}
             >
                 <div style={{ textAlign: "center", marginBottom: "28px" }}>
                     <div style={{ fontSize: "36px", marginBottom: "8px" }}>🚀</div>
-                    <h2 style={{ fontSize: "24px", fontWeight: "800", color: "#faf5ff", margin: 0 }}>Log In to API Optimizer</h2>
+                    <h2 style={{ fontSize: "24px", fontWeight: "800", color: "#f0f9ff", margin: 0 }}>Log In to API Optimizer</h2>
                     <p style={{ fontSize: "13px", color: "#cbd5e1", marginTop: "6px" }}>
                         Enter your credentials to manage connected APIs
                     </p>
@@ -124,8 +124,8 @@ function Login() {
                                 width: "100%",
                                 padding: "12px 16px",
                                 borderRadius: "12px",
-                                border: "1px solid rgba(192, 132, 252, 0.3)",
-                                backgroundColor: "rgba(30, 22, 58, 0.9)",
+                                border: "1px solid rgba(56, 189, 248, 0.3)",
+                                backgroundColor: "rgba(20, 36, 72, 0.9)",
                                 color: "#ffffff",
                                 outline: "none",
                                 fontSize: "14px",
@@ -148,8 +148,8 @@ function Login() {
                                 width: "100%",
                                 padding: "12px 16px",
                                 borderRadius: "12px",
-                                border: "1px solid rgba(192, 132, 252, 0.3)",
-                                backgroundColor: "rgba(30, 22, 58, 0.9)",
+                                border: "1px solid rgba(56, 189, 248, 0.3)",
+                                backgroundColor: "rgba(20, 36, 72, 0.9)",
                                 color: "#ffffff",
                                 outline: "none",
                                 fontSize: "14px",
@@ -165,14 +165,14 @@ function Login() {
                         style={{
                             width: "100%",
                             padding: "14px",
-                            backgroundColor: "#7c3aed",
+                            backgroundColor: "#0284c7",
                             color: "#ffffff",
                             border: "none",
                             borderRadius: "30px",
                             fontWeight: "bold",
                             fontSize: "15px",
                             cursor: "pointer",
-                            boxShadow: "0 8px 25px rgba(124, 58, 237, 0.4)",
+                            boxShadow: "0 8px 25px rgba(2, 132, 199, 0.4)",
                             display: "flex",
                             justifyContent: "center",
                             alignItems: "center",
@@ -185,7 +185,7 @@ function Login() {
 
                 <div style={{ marginTop: "24px", textAlign: "center", fontSize: "14px", color: "#cbd5e1" }}>
                     Don't have an account?{" "}
-                    <Link to="/register" state={{ from: redirectTarget, message: promptMessage }} style={{ color: "#e879f9", fontWeight: "bold", textDecoration: "none" }}>
+                    <Link to="/register" state={{ from: redirectTarget, message: promptMessage }} style={{ color: "#38bdf8", fontWeight: "bold", textDecoration: "none" }}>
                         Register Now
                     </Link>
                 </div>

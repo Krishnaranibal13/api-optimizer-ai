@@ -28,18 +28,18 @@ function RequestChart({ dashboard }) {
       <ResponsiveContainer width="100%" height={300}>
         <AreaChart data={data}>
           <defs>
-            <linearGradient id="cyberVioletGradient" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="5%" stopColor="#a855f7" stopOpacity={0.8} />
-              <stop offset="95%" stopColor="#a855f7" stopOpacity={0.05} />
+            <linearGradient id="cyberBlueGradient" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="5%" stopColor="#38bdf8" stopOpacity={0.8} />
+              <stop offset="95%" stopColor="#0284c7" stopOpacity={0.05} />
             </linearGradient>
           </defs>
-          <CartesianGrid strokeDasharray="3 3" stroke="rgba(192, 132, 252, 0.15)" />
+          <CartesianGrid strokeDasharray="3 3" stroke="rgba(56, 189, 248, 0.18)" />
           <XAxis dataKey="day" stroke="var(--text-muted)" />
           <YAxis stroke="var(--text-muted)" />
           <Tooltip
             contentStyle={{
-              backgroundColor: "rgba(18, 13, 36, 0.95)",
-              borderColor: "rgba(192, 132, 252, 0.4)",
+              backgroundColor: "rgba(11, 20, 42, 0.95)",
+              borderColor: "rgba(56, 189, 248, 0.4)",
               borderRadius: "12px",
               color: "#f8fafc"
             }}
@@ -47,10 +47,10 @@ function RequestChart({ dashboard }) {
           <Area
             type="monotone"
             dataKey="requests"
-            stroke="#c084fc"
+            stroke="#38bdf8"
             strokeWidth={3}
             fillOpacity={1}
-            fill="url(#cyberVioletGradient)"
+            fill="url(#cyberBlueGradient)"
           />
         </AreaChart>
       </ResponsiveContainer>

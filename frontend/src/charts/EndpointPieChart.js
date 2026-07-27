@@ -7,14 +7,14 @@ import {
   Legend
 } from "recharts";
 
-const CYBER_NEON_COLORS = [
-  "#a855f7",
+const CYBER_NEON_BLUE_COLORS = [
+  "#38bdf8",
   "#06b6d4",
-  "#ec4899",
+  "#60a5fa",
   "#10b981",
   "#f59e0b",
-  "#818cf8",
-  "#f472b6"
+  "#3b82f6",
+  "#22d3ee"
 ];
 
 function EndpointPieChart({ dashboard }) {
@@ -47,8 +47,8 @@ function EndpointPieChart({ dashboard }) {
             {data.map((entry, index) => (
               <Cell
                 key={`cell-${index}`}
-                fill={CYBER_NEON_COLORS[index % CYBER_NEON_COLORS.length]}
-                stroke="rgba(192, 132, 252, 0.3)"
+                fill={CYBER_NEON_BLUE_COLORS[index % CYBER_NEON_BLUE_COLORS.length]}
+                stroke="rgba(56, 189, 248, 0.3)"
                 strokeWidth={2}
               />
             ))}
@@ -56,8 +56,8 @@ function EndpointPieChart({ dashboard }) {
 
           <Tooltip
             contentStyle={{
-              backgroundColor: "rgba(18, 13, 36, 0.95)",
-              borderColor: "rgba(192, 132, 252, 0.4)",
+              backgroundColor: "rgba(11, 20, 42, 0.95)",
+              borderColor: "rgba(56, 189, 248, 0.4)",
               borderRadius: "12px",
               color: "#f8fafc"
             }}
