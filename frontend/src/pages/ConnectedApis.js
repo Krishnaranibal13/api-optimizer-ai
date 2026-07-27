@@ -172,13 +172,15 @@ function ConnectedApis({ darkMode, setDarkMode }) {
         setTimeframe(windowTime);
         setLoadingMetrics(true);
         try {
-            const data = await getHistoricalMetrics(api.id, windowTime);
-            setHistoricalMetrics(data || []);
+            const res = await getHistoricalMetrics(api.id, windowTime);
+            const timelineData = Array.isArray(res)
+                ? res
+                : (Array.isArray(res?.timeline) ? res.timeline : []);
+            setHistoricalMetrics(timelineData);
         } catch (err) {
             console.error("Failed to fetch historical metrics:", err);
-            // Fallback demo records
             setHistoricalMetrics([
-                { id: 1, response_time: api.latency || 45, status_code: 200, status: api.status || "Healthy", checked_at: new Date().toLocaleString() }
+                { id: 1, response_time: api.latency || 45, status_code: 200, status: api.status || "Healthy", checked_at: new Date().toLocaleString(), timestamp: new Date().toLocaleString() }
             ]);
         } finally {
             setLoadingMetrics(false);
@@ -532,7 +534,7 @@ function ConnectedApis({ darkMode, setDarkMode }) {
                                     <div style={{ padding: "30px", textAlign: "center", color: "var(--text-muted)" }}>
                                         Loading telemetry metrics...
                                     </div>
-                                ) : historicalMetrics.length === 0 ? (
+                                ) : (!Array.isArray(historicalMetrics) || historicalMetrics.length === 0) ? (
                                     <div style={{ padding: "30px", textAlign: "center", color: "var(--text-muted)" }}>
                                         No historical telemetry records found for timeframe ({timeframe}). Click "Test" button to generate check logs.
                                     </div>
@@ -549,14 +551,14 @@ function ConnectedApis({ darkMode, setDarkMode }) {
                                         <tbody>
                                             {historicalMetrics.map((item, idx) => (
                                                 <tr key={item.id || idx}>
-                                                    <td style={{ fontSize: "13px" }}>{item.checked_at}</td>
+                                                    <td style={{ fontSize: "13px" }}>{item.checked_at || item.timestamp || "Recent"}</td>
                                                     <td style={{ fontWeight: "bold", color: "#38bdf8" }}>{item.response_time || item.latency || 45} ms</td>
                                                     <td>
                                                         <span style={{ fontSize: "12px", fontWeight: "bold", padding: "2px 8px", borderRadius: "8px", backgroundColor: (item.status_code || 200) < 400 ? "rgba(16, 185, 129, 0.2)" : "rgba(239, 68, 68, 0.2)", color: (item.status_code || 200) < 400 ? "#34d399" : "#ef4444" }}>
                                                             {item.status_code || 200}
                                                         </span>
                                                     </td>
-                                                    <td>{getStatusBadge(item.status || "Healthy")}</td>
+                                                    <td>{getStatusBadge(item.status || ((item.status_code || 200) < 400 ? "Healthy" : "Offline"))}</td>
                                                 </tr>
                                             ))}
                                         </tbody>
