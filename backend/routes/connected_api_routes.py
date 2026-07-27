@@ -300,17 +300,22 @@ def test_api_connection_route(
     start_time = time.time()
     ssl_ok = True
     req_headers = {"User-Agent": "API-Optimizer-AI/2.0 Health Monitor"}
+    req_auth = None
     if api.api_key:
-        if api.auth_header and api.auth_header.lower() != "authorization":
+        if ":" in api.api_key:
+            parts = api.api_key.split(":", 1)
+            req_auth = (parts[0], parts[1])
+        elif api.auth_header and api.auth_header.lower() != "authorization":
             req_headers[api.auth_header] = api.api_key
         else:
-            req_headers["Authorization"] = f"Bearer {api.api_key}" if not api.api_key.startswith("Bearer ") else api.api_key
+            req_headers["Authorization"] = f"Bearer {api.api_key}" if not (api.api_key.startswith("Bearer ") or api.api_key.startswith("Basic ")) else api.api_key
 
     try:
         response = requests.get(
             api.base_url,
             timeout=6.0,
-            headers=req_headers
+            headers=req_headers,
+            auth=req_auth
         )
         elapsed_ms = round((time.time() - start_time) * 1000, 2)
         status_code = response.status_code

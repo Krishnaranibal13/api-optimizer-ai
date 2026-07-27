@@ -292,7 +292,7 @@ function ConnectedApis({ darkMode, setDarkMode }) {
                                 style={inputStyle}
                             />
                             <input
-                                placeholder="API Key / Secret Token (optional)"
+                                placeholder="API Key / Key ID or KeyID:KeySecret (optional)"
                                 type="password"
                                 value={form.api_key || ""}
                                 onChange={(e) => setForm({ ...form, api_key: e.target.value })}
