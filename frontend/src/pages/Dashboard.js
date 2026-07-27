@@ -156,7 +156,7 @@ function Dashboard({ darkMode, setDarkMode }) {
           <div className="hero-banner">
             <div>
               <h1 style={{ color: "#ffffff" }}>Monitor & Optimize APIs Like Magic ✨</h1>
-              <p style={{ color: "#e9d5ff" }}>Real-time HTTP log ingestion, predictive ML traffic forecasting, and executive business reports.</p>
+              <p style={{ color: "#e0f2fe" }}>Real-time HTTP log ingestion, predictive ML traffic forecasting, and executive business reports.</p>
             </div>
 
             <div style={{ display: "flex", gap: "12px", flexWrap: "wrap", zIndex: 1 }}>
@@ -165,7 +165,7 @@ function Dashboard({ darkMode, setDarkMode }) {
                 style={{
                   padding: "12px 20px",
                   backgroundColor: "#ffffff",
-                  color: "#4c1d95",
+                  color: "#0369a1",
                   border: "none",
                   borderRadius: "30px",
                   fontWeight: "bold",
@@ -177,7 +177,7 @@ function Dashboard({ darkMode, setDarkMode }) {
                   boxShadow: "0 8px 20px rgba(0,0,0,0.2)"
                 }}
               >
-                <FaRocket style={{ color: "#7c3aed" }} /> {isAuthenticated ? "Connect API" : "Connect API (Log In)"}
+                <FaRocket style={{ color: "#0284c7" }} /> {isAuthenticated ? "Connect API" : "Connect API (Log In)"}
               </button>
               <button
                 onClick={() => navigate("/executive-dashboard")}
@@ -214,7 +214,7 @@ function Dashboard({ darkMode, setDarkMode }) {
             }}
           >
             <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "16px" }}>
-              <FaInfoCircle style={{ fontSize: "24px", color: "#a855f7" }} />
+              <FaInfoCircle style={{ fontSize: "24px", color: "#38bdf8" }} />
               <div>
                 <h2 style={{ margin: 0, fontSize: "20px", fontWeight: "800", color: "var(--text-heading)" }}>
                   💡 What is API Optimizer AI & How Does It Work?
@@ -243,13 +243,13 @@ function Dashboard({ darkMode, setDarkMode }) {
                 }}
               >
                 <div style={{ display: "flex", alignItems: "center", gap: "8px", fontWeight: "bold", color: "var(--text-heading)", fontSize: "14px" }}>
-                  <span style={{ width: "24px", height: "24px", borderRadius: "50%", backgroundColor: "#7c3aed", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "12px" }}>1</span>
+                  <span style={{ width: "24px", height: "24px", borderRadius: "50%", backgroundColor: "#0284c7", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "12px" }}>1</span>
                   Connect REST APIs
                 </div>
                 <p style={{ margin: 0, fontSize: "12.5px", color: "var(--text-muted)", lineHeight: "1.5" }}>
                   Register API base URLs (Stripe, GitHub, custom services) to track SSL cert validity, DNS resolution, and latency health.
                 </p>
-                <span style={{ fontSize: "11px", fontWeight: "bold", color: "#e879f9", marginTop: "auto" }}>
+                <span style={{ fontSize: "11px", fontWeight: "bold", color: "#38bdf8", marginTop: "auto" }}>
                   {!isAuthenticated ? "🔒 Requires User Login" : "✅ Available"}
                 </span>
               </div>
@@ -266,13 +266,13 @@ function Dashboard({ darkMode, setDarkMode }) {
                 }}
               >
                 <div style={{ display: "flex", alignItems: "center", gap: "8px", fontWeight: "bold", color: "var(--text-heading)", fontSize: "14px" }}>
-                  <span style={{ width: "24px", height: "24px", borderRadius: "50%", backgroundColor: "#0284c7", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "12px" }}>2</span>
+                  <span style={{ width: "24px", height: "24px", borderRadius: "50%", backgroundColor: "#0369a1", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "12px" }}>2</span>
                   Real-time Telemetry
                 </div>
                 <p style={{ margin: 0, fontSize: "12.5px", color: "var(--text-muted)", lineHeight: "1.5" }}>
                   Automatically stream and filter HTTP status codes (2xx, 4xx, 5xx), payload sizes, and client IPs with multi-format CSV/JSON/PDF exports.
                 </p>
-                <span style={{ fontSize: "11px", fontWeight: "bold", color: "#38bdf8", marginTop: "auto" }}>
+                <span style={{ fontSize: "11px", fontWeight: "bold", color: "#06b6d4", marginTop: "auto" }}>
                   🌐 Public Live Telemetry
                 </span>
               </div>
@@ -289,13 +289,13 @@ function Dashboard({ darkMode, setDarkMode }) {
                 }}
               >
                 <div style={{ display: "flex", alignItems: "center", gap: "8px", fontWeight: "bold", color: "var(--text-heading)", fontSize: "14px" }}>
-                  <span style={{ width: "24px", height: "24px", borderRadius: "50%", backgroundColor: "#db2777", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "12px" }}>3</span>
+                  <span style={{ width: "24px", height: "24px", borderRadius: "50%", backgroundColor: "#1d4ed8", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "12px" }}>3</span>
                   ML Traffic Predictor
                 </div>
                 <p style={{ margin: 0, fontSize: "12.5px", color: "var(--text-muted)", lineHeight: "1.5" }}>
                   Time-series forecasting predicts traffic demand 30–60 mins in advance, evaluating system risk scores and recommending Redis caching.
                 </p>
-                <span style={{ fontSize: "11px", fontWeight: "bold", color: "#f472b6", marginTop: "auto" }}>
+                <span style={{ fontSize: "11px", fontWeight: "bold", color: "#60a5fa", marginTop: "auto" }}>
                   🤖 ML Time-Series Engine
                 </span>
               </div>
@@ -312,13 +312,13 @@ function Dashboard({ darkMode, setDarkMode }) {
                 }}
               >
                 <div style={{ display: "flex", alignItems: "center", gap: "8px", fontWeight: "bold", color: "var(--text-heading)", fontSize: "14px" }}>
-                  <span style={{ width: "24px", height: "24px", borderRadius: "50%", backgroundColor: "#ea580c", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "12px" }}>4</span>
+                  <span style={{ width: "24px", height: "24px", borderRadius: "50%", backgroundColor: "#2563eb", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "12px" }}>4</span>
                   Executive Intelligence
                 </div>
                 <p style={{ margin: 0, fontSize: "12.5px", color: "var(--text-muted)", lineHeight: "1.5" }}>
                   Calculate infrastructure cost savings (compute, data egress, DB I/O), rank APIs against global benchmarks, and export official executive PDF reports.
                 </p>
-                <span style={{ fontSize: "11px", fontWeight: "bold", color: "#fb923c", marginTop: "auto" }}>
+                <span style={{ fontSize: "11px", fontWeight: "bold", color: "#38bdf8", marginTop: "auto" }}>
                   📊 SLA Reports & PDFs
                 </span>
               </div>
@@ -328,12 +328,12 @@ function Dashboard({ darkMode, setDarkMode }) {
           {/* Canva Quick Action Row */}
           <div className="canva-action-grid">
             <div className="canva-action-card" onClick={handleConnectApiClick}>
-              <div className="canva-action-icon" style={{ background: "linear-gradient(135deg, #7c3aed, #c084fc)" }}>
+              <div className="canva-action-icon" style={{ background: "linear-gradient(135deg, #0284c7, #38bdf8)" }}>
                 <FaServer />
               </div>
               <div>
                 <h4 style={{ margin: 0, fontSize: "14px", fontWeight: "bold", color: "var(--text-heading)" }}>
-                  Connect REST API {!isAuthenticated && <FaLock style={{ fontSize: "11px", marginLeft: "4px", color: "#e879f9" }} />}
+                  Connect REST API {!isAuthenticated && <FaLock style={{ fontSize: "11px", marginLeft: "4px", color: "#38bdf8" }} />}
                 </h4>
                 <p style={{ margin: 0, fontSize: "12px", color: "var(--text-muted)" }}>
                   {!isAuthenticated ? "Log in to add API endpoints" : "Add & test API endpoints"}
@@ -342,7 +342,7 @@ function Dashboard({ darkMode, setDarkMode }) {
             </div>
 
             <div className="canva-action-card" onClick={() => navigate("/logs")}>
-              <div className="canva-action-icon" style={{ background: "linear-gradient(135deg, #0284c7, #38bdf8)" }}>
+              <div className="canva-action-icon" style={{ background: "linear-gradient(135deg, #0369a1, #06b6d4)" }}>
                 <FaList />
               </div>
               <div>
@@ -352,7 +352,7 @@ function Dashboard({ darkMode, setDarkMode }) {
             </div>
 
             <div className="canva-action-card" onClick={() => navigate("/ai-insights")}>
-              <div className="canva-action-icon" style={{ background: "linear-gradient(135deg, #db2777, #f472b6)" }}>
+              <div className="canva-action-icon" style={{ background: "linear-gradient(135deg, #1d4ed8, #60a5fa)" }}>
                 <FaMagic />
               </div>
               <div>
@@ -362,7 +362,7 @@ function Dashboard({ darkMode, setDarkMode }) {
             </div>
 
             <div className="canva-action-card" onClick={() => navigate("/executive-dashboard")}>
-              <div className="canva-action-icon" style={{ background: "linear-gradient(135deg, #ea580c, #fb923c)" }}>
+              <div className="canva-action-icon" style={{ background: "linear-gradient(135deg, #2563eb, #38bdf8)" }}>
                 <FaFilePdf />
               </div>
               <div>
@@ -378,7 +378,7 @@ function Dashboard({ darkMode, setDarkMode }) {
               title="AI Telemetry Score"
               value={dashboard.score?.score || 95}
               decimals={0}
-              color="#a855f7"
+              color="#38bdf8"
               icon={<FaRobot />}
             />
             <MetricCard
@@ -391,7 +391,7 @@ function Dashboard({ darkMode, setDarkMode }) {
               title="Avg Latency (ms)"
               value={(dashboard.score?.metrics?.avg_response_time || 0) * 1000}
               decimals={1}
-              color="#f59e0b"
+              color="#38bdf8"
               icon={<FaClock />}
             />
             <MetricCard
@@ -419,7 +419,7 @@ function Dashboard({ darkMode, setDarkMode }) {
                 boxShadow: "var(--shadow-card)"
               }}
             >
-              <FaBrain style={{ fontSize: "28px", color: "#a855f7", flexShrink: 0 }} />
+              <FaBrain style={{ fontSize: "28px", color: "#38bdf8", flexShrink: 0 }} />
               <div>
                 <h4 style={{ margin: "0 0 4px 0", color: "var(--text-heading)", fontSize: "15px", fontWeight: "bold" }}>
                   AI Business Insight ({businessInsights.summary_title || "System Health"})

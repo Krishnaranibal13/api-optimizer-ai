@@ -33,7 +33,7 @@
     border-radius: 50%;
     margin-right: 18px;
     flex-shrink: 0;
-    box-shadow: 0 0 10px rgba(168, 85, 247, 0.4);
+    box-shadow: 0 0 10px rgba(56, 189, 248, 0.4);
 }
 
 .timeline-content {
@@ -58,7 +58,7 @@
 }
 
 .warning {
-    background: #f59e0b;
+    background: #38bdf8;
 }
 
 .critical {

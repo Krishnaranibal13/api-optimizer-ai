@@ -1,33 +1,37 @@
 .recommendation-panel {
     margin-top: 30px;
-    background: white;
-    border-radius: 16px;
-    padding: 24px;
-    box-shadow: 0 6px 18px rgba(0,0,0,.08);
+    background: var(--bg-card);
+    backdrop-filter: blur(20px);
+    border-radius: 24px;
+    padding: 28px;
+    box-shadow: var(--shadow-card);
+    border: 1px solid var(--border-card);
 }
 
 .recommendation-panel h2 {
     margin-bottom: 20px;
+    color: var(--text-heading) !important;
 }
 
 .recommendation-card {
     display: flex;
     align-items: center;
     gap: 18px;
-
     padding: 18px;
     margin-bottom: 16px;
-
-    border-left: 6px solid #2563eb;
-    border-radius: 12px;
-
-    background: #f8fafc;
-
-    transition: .25s;
+    border-left: 6px solid #0284c7;
+    border-radius: 16px;
+    background: var(--table-row-bg);
+    border-top: 1px solid var(--table-border);
+    border-right: 1px solid var(--table-border);
+    border-bottom: 1px solid var(--table-border);
+    transition: all 0.25s ease;
 }
 
 .recommendation-card:hover {
     transform: translateX(6px);
+    box-shadow: var(--shadow-hover);
+    border-color: var(--border-card-hover);
 }
 
 .recommendation-icon {
@@ -40,42 +44,43 @@
 
 .recommendation-content h4 {
     margin-bottom: 6px;
+    color: var(--text-heading) !important;
 }
 
 .recommendation-content p {
-    color: #64748b;
+    color: var(--text-muted) !important;
 }
 
 /* Colors */
-
 .success {
-    border-left-color: #16a34a;
+    border-left-color: #10b981;
 }
 
 .success .recommendation-icon {
-    color: #16a34a;
+    color: #10b981;
 }
 
 .warning {
-    border-left-color: #f59e0b;
+    border-left-color: #38bdf8;
+    background: rgba(56, 189, 248, 0.08);
 }
 
 .warning .recommendation-icon {
-    color: #f59e0b;
+    color: #38bdf8;
 }
 
 .info {
-    border-left-color: #2563eb;
+    border-left-color: #06b6d4;
 }
 
 .info .recommendation-icon {
-    color: #2563eb;
+    color: #06b6d4;
 }
 
 .ai {
-    border-left-color: #9333ea;
+    border-left-color: #0284c7;
 }
 
 .ai .recommendation-icon {
-    color: #9333ea;
+    color: #0284c7;
 }

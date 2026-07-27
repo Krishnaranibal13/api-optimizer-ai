@@ -43,7 +43,7 @@
 .executive-card h1 {
     font-size: 34px;
     font-weight: 800;
-    color: #a855f7 !important;
+    color: #38bdf8 !important;
 }
 
 .executive-summary {
@@ -142,7 +142,7 @@
     box-shadow: var(--shadow-card);
     transition: all 0.3s ease;
     border: 1px solid var(--border-card);
-    border-left: 6px solid #a855f7;
+    border-left: 6px solid #0284c7;
 }
 
 .insight-card:hover {
