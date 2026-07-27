@@ -21,7 +21,7 @@ import HealthTimeline from "../components/HealthTimeline";
 import AIRiskAnalyzer from "../components/AIRiskAnalyzer";
 import AIRecommendations from "../components/AIRecommendations";
 
-import { getConnectedApiSummary } from "../services/connectedApiService";
+import { getConnectedApiSummary, getConnectedApis } from "../services/connectedApiService";
 import { getAiScoreCard, getAiBusinessInsights } from "../services/aiService";
 import { useAuth } from "../auth/AuthContext";
 
@@ -53,6 +53,7 @@ function Dashboard({ darkMode, setDarkMode }) {
   const [apiSummary, setApiSummary] = useState(null);
   const [scoreCard, setScoreCard] = useState(null);
   const [businessInsights, setBusinessInsights] = useState(null);
+  const [connectedApisList, setConnectedApisList] = useState([]);
   const [lastUpdated, setLastUpdated] = useState("");
   const [selectedApiId, setSelectedApiId] = useState("");
   const [error, setError] = useState(null);
@@ -78,12 +79,17 @@ function Dashboard({ darkMode, setDarkMode }) {
   async function fetchDashboard(targetApiId = selectedApiId) {
     try {
       const url = targetApiId ? `/ai/dashboard?api_id=${targetApiId}` : "/ai/dashboard";
-      const [res, summaryRes, scoreCardRes, businessRes] = await Promise.all([
+      const [res, summaryRes, scoreCardRes, businessRes, apisRes] = await Promise.all([
         API.get(url).catch(() => null),
         getConnectedApiSummary().catch(() => null),
         getAiScoreCard().catch(() => null),
         getAiBusinessInsights().catch(() => null),
+        getConnectedApis().catch(() => null),
       ]);
+
+      if (apisRes && apisRes.items) {
+        setConnectedApisList(apisRes.items);
+      }
 
       if (res && res.data) {
         setDashboard(res.data);
@@ -145,6 +151,10 @@ function Dashboard({ darkMode, setDarkMode }) {
       </div>
     );
   }
+
+  const apiOptions = (dashboard.connected_apis && dashboard.connected_apis.length > 0)
+    ? dashboard.connected_apis
+    : connectedApisList;
 
   return (
     <div className={`dashboard ${darkMode ? "dark" : ""}`}>
@@ -229,7 +239,7 @@ function Dashboard({ darkMode, setDarkMode }) {
                 <div style={{ fontSize: "16px", fontWeight: "800", color: "var(--text-heading)", display: "flex", alignItems: "center", gap: "8px" }}>
                   <span>{dashboard.selected_api_name || "All Connected APIs (Global Telemetry)"}</span>
                   <span style={{ fontSize: "11px", padding: "2px 10px", borderRadius: "12px", backgroundColor: "rgba(56, 189, 248, 0.15)", color: "#38bdf8", border: "1px solid rgba(56, 189, 248, 0.3)" }}>
-                    {dashboard.connected_apis ? `${dashboard.connected_apis.length} Connected APIs` : "Live Global Stream"}
+                    {apiOptions.length > 0 ? `${apiOptions.length} Connected APIs` : "Live Global Stream"}
                   </span>
                 </div>
               </div>
@@ -260,7 +270,7 @@ function Dashboard({ darkMode, setDarkMode }) {
                 }}
               >
                 <option value="">🌐 All Connected APIs (Global Telemetry)</option>
-                {(dashboard.connected_apis || []).map((api) => (
+                {apiOptions.map((api) => (
                   <option key={api.id} value={api.id}>
                     🔗 {api.name} ({api.base_url}) - {api.status}
                   </option>

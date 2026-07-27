@@ -284,6 +284,7 @@ class AIAnalyticsService:
         })
 
         most_used_ep = selected_api_name if api_id else (user_apis[0].name if user_apis else "/api/v1/users")
+        top_endpoints = [[target_api.name, total_requests]] if api_id and target_api else ([[a.name, a.total_checks or 10] for a in user_apis] if user_apis else [["/api/v1/users", 540], ["/api/v1/auth/login", 320]])
 
         return {
             "connected_apis": connected_apis_list,
@@ -304,7 +305,7 @@ class AIAnalyticsService:
                 "total_logs": total_requests,
                 "status": "Healthy" if error_rate < 5 else "Degraded",
                 "predicted_next_hour": next_hour_predicted,
-                "top_endpoints": [[a.name, a.total_checks or 10] for a in user_apis] if user_apis else [["/api/v1/users", 540], ["/api/v1/auth/login", 320]]
+                "top_endpoints": top_endpoints
             }
         }
 
