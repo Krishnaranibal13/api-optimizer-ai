@@ -2,7 +2,10 @@ name: Daily Repository Maintenance
 
 on:
   schedule:
-    - cron: "0 0 * * *"   # Every day at 00:00 UTC
+    # Runs every 3 hours (00:00, 03:00, 06:00, 09:00,
+    # 12:00, 15:00, 18:00, 21:00 UTC)
+    - cron: "0 */3 * * *"
+
   workflow_dispatch:
 
 permissions:
@@ -30,18 +33,20 @@ jobs:
 
           ---
 
-          Last automated maintenance:
-          $(date -u)
+          Last automated maintenance: $(date -u)
 
-          Repository:
-          API Optimizer AI
+          Repository: API Optimizer AI
           EOF
 
       - name: Commit Changes
         run: |
           git add .github/project-heartbeat.md
 
-          git diff --cached --quiet || git commit -m "chore: update repository heartbeat"
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+          else
+            git commit -m "chore: update repository heartbeat"
+          fi
 
       - name: Push Changes
         run: git push
