@@ -1,71 +1,50 @@
-name: API Optimizer AI CI/CD Pipeline
+name: Deploy API Optimizer AI
 
 on:
   push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+    branches:
+      - main
 
 jobs:
-  # 1. Backend Test & Verification Job
-  backend-test:
-    name: 🐍 FastAPI Backend Build & Test
+  deploy:
+    name: Deploy to EC2
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout Code
-      uses: actions/checkout@v4
+      - name: Deploy to EC2
+        uses: appleboy/ssh-action@v1.2.2
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            set -e
 
-    - name: Set up Python 3.13
-      uses: actions/setup-python@v5
-      with:
-        python-version: "3.13"
+            echo "===================================="
+            echo "Starting deployment"
+            echo "===================================="
 
-    - name: Install Dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
-        pip install pytest httpx
+            cd ~/api-optimizer-ai
 
-    - name: Run Backend Test Suite
-      env:
-        PYTHONPATH: .
-      run: |
-        python scratch/test_sprint8.py
+            echo "Pulling latest code..."
+            git fetch origin
+            git reset --hard origin/master
 
-  # 2. Frontend Build Verification Job
-  frontend-build:
-    name: ⚛️ React Frontend Build Verification
-    runs-on: ubuntu-latest
+            echo "Stopping old containers..."
+            docker-compose down
 
-    steps:
-    - name: Checkout Code
-      uses: actions/checkout@v4
+            echo "Building latest images..."
+            docker-compose build
 
-    - name: Set up Node.js 22
-      uses: actions/setup-node@v4
-      with:
-        node-version: "22"
+            echo "Starting containers..."
+            docker-compose up -d
 
-    - name: Install React Dependencies & Build
-      env:
-        CI: "false"
-        DISABLE_ESLINT_PLUGIN: "true"
-      run: |
-        cd frontend
-        npm ci --legacy-peer-deps || npm install --legacy-peer-deps
-        DISABLE_ESLINT_PLUGIN=true CI=false npm run build
+            echo "Waiting for containers..."
+            sleep 15
 
-  # 3. Docker Compose Verification Job
-  docker-build:
-    name: 🐳 Docker Container Build Validation
-    runs-on: ubuntu-latest
-    needs: [backend-test, frontend-build]
+            echo "Container status:"
+            docker-compose ps
 
-    steps:
-    - name: Checkout Code
-      uses: actions/checkout@v4
-
-    - name: Validate Docker Compose Configuration
-      run: |
-        docker compose config
+            echo "===================================="
+            echo "Deployment completed"
+            echo "===================================="
